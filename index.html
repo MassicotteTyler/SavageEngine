@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body onload="doGLDraw();">
+        <div>TODO write content</div>
+        <canvas id="GLCanvas" width="640" height="480">
+            Your browser does not support the HTML5 canvas.
+        </canvas>
+        <script type="text/javascript" src="src/WebGL.js"></script>
+        <script type="text/javascript" src="src/VertexBuffer.js"></script>
+        <script type="text/javascript" src="src/ShaderSupport.js"></script>
+        <script type="x-shader/x-vertex" id="VertexShader">
+            attribute vec3 aSquareVertexPosition;
+            void main(void)
+            {
+                gl_position = vec4(aSquareVertexPosition, 1.0);
+            }
+        </script>
+        <script type="x-shader/x-fragment" id="FragmentShader">
+            void main(void)
+            {
+                gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+            }
+        </script>
+    </body>
+</html>
