@@ -22,7 +22,7 @@ function SavageGame(htmlCanvasID)
   this.mWhiteSq.draw();
 
   this.mRedSq.getXform().setXPos(0.25);
-  this.mRedSq.getXform().setYpos(-0.25);
+  this.mRedSq.getXform().setYPos(-0.25);
   this.mRedSq.getXform().setRotationInDegree(45);
   this.mRedSq.getXform().setWidth(0.4);
   this.mRedSq.getXform().setHeight(0.4);
