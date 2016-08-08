@@ -28,5 +28,5 @@ function SavageGame(htmlCanvasID)
   mat4.rotateZ(xform, xform, -0.785);
   mat4.scale(xform, xform, vec3.fromValues(0.4, 0.4, 1.0));
 
-	this.mRedSq.drawx(xform);
+	this.mRedSq.draw(xform);
 };
