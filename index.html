@@ -5,15 +5,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body onload="doGLDraw();">
+    <body onload="new SavageGame('GLCanvas');">
         <div>TODO write content</div>
         <canvas id="GLCanvas" width="640" height="480">
             Your browser does not support the HTML5 canvas.
         </canvas>
-        <script type="text/javascript" src="src/WebGL.js"></script>
-        <script type="text/javascript" src="src/VertexBuffer.js"></script>
-        <script type="text/javascript" src="src/ShaderSupport.js"></script>
-        <script type="x-shader/x-vertex" id="VertexShader">
+        <script type="text/javascript" src="src/Engine/Engine_Core.js"></script>
+        <script type="text/javascript" src="src/Engine/Engine_VertexBuffer.js"></script>
+        <script type="text/javascript" src="src/Engine/SimpleShader.js"></script>
+
+        
+
+        <script type="text/javascript" src="src/SavageGame/SavageGame.js"></script>
+
+
+        <!-- <script type="x-shader/x-vertex" id="VertexShader">
             attribute vec3 aSquareVertexPosition;
             void main(void)
             {
@@ -25,6 +31,6 @@
             {
                 gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
             }
-        </script>
+        </script> -->
     </body>
 </html>
