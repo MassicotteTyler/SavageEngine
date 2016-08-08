@@ -22,7 +22,7 @@ Camera.prototype.setWCCenter = function(xPos, yPos)
 	this.mWCCenter[1] = yPos;
 };
 
-Camera.prototype.getWCCenter = function() { retrun this.mWCCenter; };
+Camera.prototype.getWCCenter = function() { return this.mWCCenter; };
 Camera.prototype.setWCWidth = function(width) { this.mWCWidth = width; };
 
 Camera.prototype.setViewport = function(viewportArray)
@@ -44,16 +44,16 @@ Camera.prototype.setupViewProjection = function()
 {
 	var gl = gEngine.Core.getGL();
 	//Configure viewport
-	gl.viewport(this.mViewPort[0],
-			this.mViewPort[1],
-			this.mViewPort[2],
-			this.mViewPort[3]
+	gl.viewport(this.mViewport[0],
+			this.mViewport[1],
+			this.mViewport[2],
+			this.mViewport[3]
 			);
 
 	gl.scissor(this.mViewport[0],
-		this.mViewPort[1],
-		this.mViewPort[2],
-		this.mViewPort[3]
+		this.mViewport[1],
+		this.mViewport[2],
+		this.mViewport[3]
 		);
 
 	gl.clearColor(this.mBgColor[0], this.mBgColor[1],

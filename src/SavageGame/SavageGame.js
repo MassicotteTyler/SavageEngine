@@ -3,11 +3,18 @@
 function SavageGame(htmlCanvasID)
 {
 	gEngine.Core.initializeWebGL(htmlCanvasID);
-	this.mConstColorShader = new SimpleShader(
-		"src/GLSLShaders/SimpleVS.glsl",
-		"src/GLSLShaders/SimpleFS.glsl");
-
 	var gl = gEngine.Core.getGL();
+
+	//Setup the camera
+	this.mCamera = new Camera(
+		vec2.fromValues(20, 60),
+		20,
+		[20, 40, 600, 300]
+		);
+
+	this.mConstColorShader = new SimpleShader(
+	"src/GLSLShaders/SimpleVS.glsl",
+	"src/GLSLShaders/SimpleFS.glsl");
 
 	//Create renderable objects
 	this.mWhiteSq = new Renderable(this.mConstColorShader);
@@ -28,6 +35,9 @@ function SavageGame(htmlCanvasID)
 	this.mBLSq.setColor([0.1, 0.1, 0.1, 1]); // Bottom-Left shows dark gray
 	
 	gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);
+
+	this.mCamera.setupViewProjection();
+	var vpMatrix = this.mCamera.getVPMatrix();
 
 	gl.viewport(
 		20,
