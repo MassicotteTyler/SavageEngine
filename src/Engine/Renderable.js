@@ -5,11 +5,11 @@ function Renderable(shader)
 	this.mColor = [1, 1, 1, 1];
 }
 
-Renderable.prototype.draw = function(modelTransform)
+Renderable.prototype.draw = function(vpMatrix)
 {
 	var gl = gEngine.Core.getGL();
-	this.mShader.activateShader(this.mColor);
-  this.mShader.loadObjectTransform(this.mXform.getXform());
+	this.mShader.activateShader(this.mColor, vpMatrix);
+  	this.mShader.loadObjectTransform(this.mXform.getXform());
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 };
 
