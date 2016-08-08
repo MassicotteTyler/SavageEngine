@@ -16,17 +16,15 @@ function SavageGame(htmlCanvasID)
 
 	gEngine.Core.clearCanvas([0, 0.8, 0, 1]);
 
-  var xform = mat4.create();
-  mat4.translate(xform, xform, vec3.fromValues(-0.25, 0.25, 0.0));
-  mat4.rotateZ(xform, xform, 0.2);
-  mat4.scale(xform, xform, vec3.fromValues(1.2, 1.2, 1.0));
+  this.mWhiteSq.getXform().setPosition(-0.25, 0.25);
+  this.mWhiteSq.getXform().setRotationInRad(0.2);
+  this.mWhiteSq.getXform().setSize(1.2, 1.2);
+  this.mWhiteSq.draw();
 
-	this.mWhiteSq.draw(xform);
-
-  mat4.identity(xform);
-  mat4.translate(xform, xform, vec3.fromValues(0.25, -0.25, 0.0));
-  mat4.rotateZ(xform, xform, -0.785);
-  mat4.scale(xform, xform, vec3.fromValues(0.4, 0.4, 1.0));
-
-	this.mRedSq.draw(xform);
+  this.mRedSq.getXform().setXPos(0.25);
+  this.mRedSq.getXform().setYpos(-0.25);
+  this.mRedSq.getXform().setRotationInDegree(45);
+  this.mRedSq.getXform().setWidth(0.4);
+  this.mRedSq.getXform().setHeight(0.4);
+	this.mRedSq.draw();
 };
