@@ -27,7 +27,9 @@ gEngine.GameLoop = (function () {
             mPreviousTime = mCurrentTime;
             mLagTime += mElapsedTime;
 
-            while ((mLagTime >= kMPF) && mIsLoopRunning) {
+            while ((mLagTime >= kMPF) && mIsLoopRunning)
+            {
+                gEngine.Input.update();
                 this.update();      // call MyGame.update()
                 mLagTime -= kMPF;
             }
@@ -46,7 +48,6 @@ gEngine.GameLoop = (function () {
 
         requestAnimationFrame(function () { _runLoop.call(mMyGame); });
     };
-
 
     var mPublic = {
         start: start
