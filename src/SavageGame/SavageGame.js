@@ -2,99 +2,71 @@
 
 function SavageGame(htmlCanvasID)
 {
-	gEngine.Core.initializeWebGL(htmlCanvasID);
-	var gl = gEngine.Core.getGL();
+  this.mConstColorShader = null;
 
-	//Setup the camera
-	this.mCamera = new Camera(
-		vec2.fromValues(20, 60),
-		20,
-		[20, 40, 600, 300]
-		);
+  this.mWhiteSq = null;
+  this.mRedSq = null;
 
-	this.mConstColorShader = new SimpleShader(
-	"src/GLSLShaders/SimpleVS.glsl",
-	"src/GLSLShaders/SimpleFS.glsl");
+  this.mCamera = null;
 
-	//Create renderable objects
-	this.mWhiteSq = new Renderable(this.mConstColorShader);
-	this.mWhiteSq.setColor([1, 1, 1, 1]);
-	this.mRedSq = new Renderable(this.mConstColorShader);
-	this.mRedSq.setColor([1, 0, 0, 1]);
-	this.mBlueSq = new Renderable(this.mConstColorShader);
-	this.mBlueSq.setColor([0.25, 0.25, 0.95, 1]);
-	this.mRedSq = new Renderable(this.mConstColorShader);
-	this.mRedSq.setColor([1, 0.25, 0.25, 1]);
-	this.mTLSq = new Renderable(this.mConstColorShader);
-	this.mTLSq.setColor([0.9, 0.1, 0.1, 1]); // Top-Left shows red
-	this.mTRSq = new Renderable(this.mConstColorShader);
-	this.mTRSq.setColor([0.1, 0.9, 0.1, 1]); // Top-Right shows green
-	this.mBRSq = new Renderable(this.mConstColorShader);
-	this.mBRSq.setColor([0.1, 0.1, 0.9, 1]); // Bottom-Right shows blue
-	this.mBLSq = new Renderable(this.mConstColorShader);
-	this.mBLSq.setColor([0.1, 0.1, 0.1, 1]); // Bottom-Left shows dark gray
-	
-	gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);
+  gEngine.Core.initializeWebGL(htmlCanvasID);
 
-	this.mCamera.setupViewProjection();
-	var vpMatrix = this.mCamera.getVPMatrix();
+  this.initialize();
+};
 
-	gl.viewport(
-		20,
-		40,
-		600,
-		300
-		);
+SavageGame.prototype.initialize = function()
+{
+  this.mCamera = new Camera(
+  vec2.fromValues(20, 60),
+  20,
+  [20, 40, 600, 300]
+  );
 
-	//Setup to limit clear area
-	gl.scissor(
-		20,
-		40,
-		600,
-		300
-		);
+  this.mCamera.setBackgroundColor([0.8, 0.8, 1]);
 
-	var viewMatrix = mat4.create();
-	var projMatrix = mat4.create();
+  this.mConstColorShader = new SimpleShader(
+    "src/GLSLShaders/SimpleVS.glsl",
+    "src/GLSLShaders/SimpleFS.glsl");
 
-	mat4.lookAt(viewMatrix,
-		[20, 60, 10],
-		[20, 60, 0],
-		[0, 1, 0]);
+    //Renderable objects
+    this.mWhiteSq = new Renderable(this.mConstColorShader);
+    this.mWhiteSq.setColor([1, 1, 1, 1]);
+    
+    this.mRedSq = new Renderable(this.mConstColorShader);
+    this.mRedSq.setColor([1, 0, 0, 1]);
 
-	mat4.ortho(projMatrix,
-		-10,
-		10,
-		-5,
-		5,
-		0,
-		1000
-		);
+    this.mWhiteSq.getXform().setPosition(20, 60);
+    this.mWhiteSq.getXform().setRotationInRad(0.2);
+    this.mWhiteSq.getXform().setSize(5, 5);
 
-	var vpMatrix = mat4.create();
-	mat4.multiply(vpMatrix, projMatrix, viewMatrix);
+    this.mRedSq.getXform().setPosition(20, 60);
+    this.mRedSq.getXform().setSize(2, 2);
 
-	gl.enable(gl.SCISSOR_TEST);
-	gEngine.Core.clearCanvas([0.8, 0.8, 0.8, 1.0]);
-	gl.disable(gl.SCISSOR_TEST);
+    gEngine.GameLoop.start(this);
+};
 
+SavageGame.prototype.update = function()
+{
+  var whiteXform = this.mWhiteSq.getXform();
+  var deltaX = 0.05;
+  if (whiteXform.getXPos() > 30)
+    whiteXform.setPosition(10, 60);
+  whiteXform.incXPosBy(deltaX);
+  whiteXform.incRotationByDegree(1);
 
-	this.mBlueSq.getXform().setPosition(20, 60);
-	this.mBlueSq.getXform().setRotationInRad(0.2); // In Radians
-	this.mBlueSq.getXform().setSize(5, 5);
-	this.mBlueSq.draw(vpMatrix);
+  var redXform = this.mRedSq.getXform();
+  if (redXform.getWidth() > 5 )
+    redXform.setSize(2, 2);
+  redXform.incSizeBy(0.05);
+};
 
+SavageGame.prototype.draw = function()
+{
+  gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
 
-	// top left
-	this.mTLSq.getXform().setPosition(10, 65);
-	this.mTLSq.draw(vpMatrix);
-	// top right
-	this.mTRSq.getXform().setPosition(30, 65);
-	this.mTRSq.draw(vpMatrix);
-	// bottom right
-	this.mBRSq.getXform().setPosition(30, 55);
-	this.mBRSq.draw(vpMatrix);
-	// bottom left
-	this.mBLSq.getXform().setPosition(10, 55);
-	this.mBLSq.draw(vpMatrix);
+  this.mCamera.setupViewProjection();
+
+  this.mWhiteSq.draw(this.mCamera.getVPMatrix());
+
+  this.mRedSq.draw(this.mCamera.getVPMatrix());
 };

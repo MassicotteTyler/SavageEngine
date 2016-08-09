@@ -1,59 +1,56 @@
-"use strict";
+"use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 var gEngine = gEngine || { };
 
-gEngine.GameLoop = (function()
-                    {
-                      var mPublic = { };
-                      return mPublic;
-                    } ());
+gEngine.GameLoop = (function () {
+    var kFPS = 60;          // Frames per second
+    var kMPF = 1000 / kFPS; // Milliseconds per frame.
 
-var kFPS = 60;
-var kMPF = 1000 / kFPS;
+    // Variables for timing gameloop.
+    var mPreviousTime;
+    var mLagTime;
+    var mCurrentTime;
+    var mElapsedTime;
 
-//timing gameloop
-var mPreviousTime;
-var mLagTime;
-var mCurrentTime;
-var mElaspedTime;
+    // The current loop state (running or should stop)
+    var mIsLoopRunning = false;
 
-var mIsLoopRunning = false;
+    var mMyGame = null;
 
-var mMyGame = null;
+    // This function assumes it is sub-classed from MyGame
+    var _runLoop = function () {
+        if (mIsLoopRunning) {
+            requestAnimationFrame(function () { _runLoop.call(mMyGame); });
 
-var _runLoop = function()
-{
-  if (mIsLoopRunning)
-    {
-      requestAnimationFrame(function() { _runLoop.call(mMyGame); } );
-      mCurrentTime = Date.now();
-      mElaspedTime = mCurrentTime - mPreviousTime;
-      mPreviousTime = mCurrentTime;
-      mLagTime += mElaspedTime;
+            mCurrentTime = Date.now();
+            mElapsedTime = mCurrentTime - mPreviousTime;
+            mPreviousTime = mCurrentTime;
+            mLagTime += mElapsedTime;
 
-      while ((mLagTime >= kMPF) && mIsLoopRunning)
-      {
-          this.update();
-          mLagTime -= kMPF;
-      }
+            while ((mLagTime >= kMPF) && mIsLoopRunning) {
+                this.update();      // call MyGame.update()
+                mLagTime -= kMPF;
+            }
 
-      this.draw();
-    }
-}
+            this.draw();    // Call MyGame.draw()
+        }
+    };
 
-var start = function(_Game)
-{
-  mGame = _Game;
+    var start = function (myGame) {
+        mMyGame = myGame;
 
-  mPreviousTime = Date.now();
-  mLagTime = 0.0;
-  mIsLoopRunning = true;
+        mPreviousTime = Date.now();
+        mLagTime = 0.0;
 
-  requestAnimationFrame(function(){_runLoop.call(mMyGame); });
-};
+        mIsLoopRunning = true;
 
-var mPublic =
-{
-  start: start
-};
-return mPublic;
+        requestAnimationFrame(function () { _runLoop.call(mMyGame); });
+    };
+
+
+    var mPublic = {
+        start: start
+    };
+    return mPublic;
+
+}());

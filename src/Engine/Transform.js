@@ -27,11 +27,27 @@ Transform.prototype.setSize = function(width, height)
   this.setHeight(height);
 };
 
+Transform.prototype.incSizeBy = function (delta)
+{
+    this.incWidthBy(delta);
+    this.incHeightBy(delta);
+};
+
 Transform.prototype.setRotationInRad = function(rotationInRadians)
 {
   this.mRotationInRad = rotationInRadians;
   while (this.mRotationInRad > (2*Math.PI))
     this.mRotationInRad -= (2*Math.PI);
+};
+
+Transform.prototype.incRotationByDegree = function (deltaDegree)
+{
+    this.incRotationByRad(deltaDegree * Math.PI / 180.0);
+};
+
+Transform.prototype.incRotationByRad = function (deltaRad)
+{
+    this.setRotationInRad(this.mRotationInRad + deltaRad);
 };
 
 Transform.prototype.setRotationInDegree = function(rotationInDegree)
