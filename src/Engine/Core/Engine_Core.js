@@ -28,6 +28,13 @@ gEngine.Core = (function()
     gEngine.DefaultResources.initialize(function () { startScene(_Game); });
   };
 
+  var inheritPrototype = function(subClass, superClass)
+  {
+    var prototype = Object.create(superClass.prototype);
+    prototype.constructor = subClass;
+    subClass.prototype = prototype;
+  };
+
   var clearCanvas = function(color)
   {
     mGL.clearColor(color[0], color[1], color[2], color[3]);
@@ -44,7 +51,9 @@ gEngine.Core = (function()
 	{
 		getGL: getGL,
 		initializeEngineCore: initializeEngineCore,
-		clearCanvas: clearCanvas
+    inheritPrototype: inheritPrototype,
+		clearCanvas: clearCanvas,
+    startScene: startScene
 	};
 
 	return mPublic;

@@ -18,8 +18,10 @@ gEngine.GameLoop = (function () {
     var mMyGame = null;
 
     // This function assumes it is sub-classed from MyGame
-    var _runLoop = function () {
-        if (mIsLoopRunning) {
+    var _runLoop = function ()
+    {
+        if (mIsLoopRunning) 
+        {
             requestAnimationFrame(function () { _runLoop.call(mMyGame); });
 
             mCurrentTime = Date.now();
@@ -35,6 +37,9 @@ gEngine.GameLoop = (function () {
             }
 
             this.draw();    // Call MyGame.draw()
+        } else
+        {
+            mMyGame.unloadScene();
         }
     };
 
@@ -60,8 +65,15 @@ gEngine.GameLoop = (function () {
       requestAnimationFrame(function(){_runLoop.call(mMyGame);});
     };
 
-    var mPublic = {
-        start: start
+    var stop = function()
+    {
+        mIsLoopRunning = false;
+    };
+
+    var mPublic =
+    {
+        start: start,
+        stop: stop
     };
     return mPublic;
 

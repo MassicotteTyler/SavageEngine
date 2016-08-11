@@ -7,6 +7,9 @@ function SavageGame()
   this.mCamera = null;
 };
 
+
+gEngine.Core.inheritPrototype(SavageGame, Scene);
+
 SavageGame.prototype.initialize = function()
 {
   var sceneParser = new SceneFileParser(this.kSceneFile);
@@ -38,6 +41,15 @@ SavageGame.prototype.update = function()
     xform.incSizeBy(0.05);
   }
 
+  if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
+  {
+    xform.incXPosBy(-deltaX);
+    if (xform.getXPos() < 11)
+    {
+      gEngine.GameLoop.stop();
+    }
+  }
+
 };
 
 SavageGame.prototype.draw = function()
@@ -61,6 +73,8 @@ SavageGame.prototype.loadScene = function()
 SavageGame.prototype.unloadScene = function()
 {
   gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
+  var nextLevel = new BlueLevel();
+  gEngine.Core.startScene(nextLevel);
 };
 
 
