@@ -1,6 +1,6 @@
 "use strict";
 
-function SavageGame(htmlCanvasID)
+function SavageGame()
 {
   this.mConstColorShader = null;
 
@@ -9,9 +9,6 @@ function SavageGame(htmlCanvasID)
 
   this.mCamera = null;
 
-  gEngine.Core.initializeEngineCore(htmlCanvasID);
-
-  this.initialize();
 };
 
 SavageGame.prototype.initialize = function()
@@ -24,25 +21,23 @@ SavageGame.prototype.initialize = function()
 
   this.mCamera.setBackgroundColor([0.8, 0.8, 1]);
 
-  this.mConstColorShader = new SimpleShader(
-    "src/GLSLShaders/SimpleVS.glsl",
-    "src/GLSLShaders/SimpleFS.glsl");
+  this.mConstColorShader = gEngine.DefaultResources.getConstColorShader();
 
-    //Renderable objects
-    this.mWhiteSq = new Renderable(this.mConstColorShader);
-    this.mWhiteSq.setColor([1, 1, 1, 1]);
-    
-    this.mRedSq = new Renderable(this.mConstColorShader);
-    this.mRedSq.setColor([1, 0, 0, 1]);
+  //Renderable objects
+  this.mWhiteSq = new Renderable(this.mConstColorShader);
+  this.mWhiteSq.setColor([1, 1, 1, 1]);
+  
+  this.mRedSq = new Renderable(this.mConstColorShader);
+  this.mRedSq.setColor([1, 0, 0, 1]);
 
-    this.mWhiteSq.getXform().setPosition(20, 60);
-    this.mWhiteSq.getXform().setRotationInRad(0.2);
-    this.mWhiteSq.getXform().setSize(5, 5);
+  this.mWhiteSq.getXform().setPosition(20, 60);
+  this.mWhiteSq.getXform().setRotationInRad(0.2);
+  this.mWhiteSq.getXform().setSize(5, 5);
 
-    this.mRedSq.getXform().setPosition(20, 60);
-    this.mRedSq.getXform().setSize(2, 2);
+  this.mRedSq.getXform().setPosition(20, 60);
+  this.mRedSq.getXform().setSize(2, 2);
 
-    gEngine.GameLoop.start(this);
+  gEngine.GameLoop.start(this);
 };
 
 SavageGame.prototype.update = function()

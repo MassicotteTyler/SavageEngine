@@ -25,7 +25,7 @@ gEngine.TextFileLoader = (function()
       };
 
       req.open('GET', fileName, true);
-      req.setRequestedHeader('Content-Typer', 'text/xml');
+      req.setRequestHeader('Content-Typer', 'text/xml');
 
       req.onload = function ()
       {

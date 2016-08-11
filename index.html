@@ -5,7 +5,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body onload="new SavageGame('GLCanvas');">
+    <body onload="var Game = new SavageGame();
+                  gEngine.Core.initializeEngineCore('GLCanvas', Game);">
         <canvas id="GLCanvas" width="640" height="480">
             Your browser does not support the HTML5 canvas.
         </canvas>
@@ -14,6 +15,9 @@
         <script type="text/javascript" src="src/Engine/Core/Engine_VertexBuffer.js"></script>
         <script type="text/javascript" src="src/Engine/Core/Engine_GameLoop.js"></script>
         <script type="text/javascript" src="src/Engine/Core/Engine_Input.js"></script>
+        <script type="text/javascript" src="src/Engine/Core/Resources/Engine_DefaultResources.js"></script>
+        <script type="text/javascript" src="src/Engine/Core/Resources/Engine_ResourceMap.js"></script>
+        <script type="text/javascript" src="src/Engine/Core/Resources/Engine_TextFileLoader.js"></script>
         <script type="text/javascript" src="src/Engine/Transform.js"></script>
         <script type="text/javascript" src="src/Engine/SimpleShader.js"></script>
         <script type="text/javascript" src="src/Engine/Renderable.js"></script>

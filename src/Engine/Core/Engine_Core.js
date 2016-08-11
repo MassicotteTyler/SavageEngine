@@ -19,17 +19,25 @@ gEngine.Core = (function()
     }
   };
 
-  var initializeEngineCore = function(htmlCanvasID)
+  var initializeEngineCore = function(htmlCanvasID, _Game)
   {
     initializeWebGL(htmlCanvasID);
     gEngine.VertexBuffer.initialize();
     gEngine.Input.initialize();
+
+    gEngine.DefaultResources.initialize(function () { startScene(_Game); });
   };
 
   var clearCanvas = function(color)
   {
     mGL.clearColor(color[0], color[1], color[2], color[3]);
     mGL.clear(mGL.COLOR_BUFFER_BIT);
+  };
+
+  var startScene = function(_Game)
+  {
+    _Game.initialize.call(_Game);
+    gEngine.GameLoop.start(_Game);
   };
 
 	var mPublic =

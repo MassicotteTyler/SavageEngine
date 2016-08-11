@@ -96,3 +96,29 @@ SimpleShader.prototype.loadObjectTransform = function(modelTransform)
   gl.uniformMatrix4fv(this.mModelTransform, false, modelTransform);
 };
 
+SimpleShader.prototype._compileShader = function(filePath, shaderType)
+{
+	var gl = gEngine.Core.getGL();
+	var shaderSource = null, compiledShader = null;
+
+	shaderSource = gEngine.ResourceMap.retrieveAsset(filePath);
+
+	if (shaderSource === null)
+	{
+		alert("WARNING: Loading of: " + filePath + " Failed");
+		return null;
+	}
+
+	compiledShader = gl.createShader(shaderType);
+
+	gl.shaderSource(compiledShader, shaderSource);
+	gl.compileShader(compiledShader);
+
+	if (!gl.getShaderParameter(compiledShader, gl.COMPILE_STATUS))
+	{
+		alert("A shader compiling error occured: " + gl.getShaderInfoLog(compiledShader));
+	}
+	return compiledShader
+
+
+}
