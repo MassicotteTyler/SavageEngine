@@ -5,6 +5,9 @@ function SavageGame()
   this.kSceneFile = "assets/scene.xml";
   this.mSqSet = new Array();
   this.mCamera = null;
+
+  this.kBgClip = "assets/sounds/BGClip.mp3";
+  this.kCue = "assets/sounds/MyGame_cue.wav";
 };
 
 
@@ -15,6 +18,7 @@ SavageGame.prototype.initialize = function()
   var sceneParser = new SceneFileParser(this.kSceneFile);
   this.mCamera = sceneParser.parseCamera();
   sceneParser.parseSquares(this.mSqSet);
+  gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 };
 
 SavageGame.prototype.update = function()
@@ -24,6 +28,7 @@ SavageGame.prototype.update = function()
 
   if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
   {
+    gEngine.AudioClips.playACue(this.kCue);
     if (xform.getXPos() > 30)
       xform.setPosition(10, 60);
     xform.incXPosBy(deltaX);
@@ -43,6 +48,7 @@ SavageGame.prototype.update = function()
 
   if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
   {
+    gEngine.AudioClips.playACue(this.kCue);
     xform.incXPosBy(-deltaX);
     if (xform.getXPos() < 11)
     {
@@ -68,13 +74,23 @@ SavageGame.prototype.loadScene = function()
 {
   gEngine.TextFileLoader.loadTextFile(this.kSceneFile,
                                gEngine.TextFileLoader.eTextFileType.eXMLFile);
+
+  gEngine.AudioClips.loadAudio(this.kBgClip);
+  gEngine.AudioClips.loadAudio(this.kCue);
 };
 
 SavageGame.prototype.unloadScene = function()
 {
+  //stop the background audio before unloading it
+  gEngine.AudioClips.stopBackgroundAudio();
+
+  gEngine.AudioClips.unloadAudio(this.kCue);
   gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
   var nextLevel = new BlueLevel();
   gEngine.Core.startScene(nextLevel);
+
+
+
 };
 
 

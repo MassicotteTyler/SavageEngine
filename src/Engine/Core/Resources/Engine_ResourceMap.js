@@ -7,6 +7,7 @@ gEngine.ResourceMap = (function()
   var MapEntry = function (rName)
   {
     this.mAsset = rName;
+    this.mRefCount = 1;
   };
 
   var mResourceMap = {};
@@ -23,6 +24,12 @@ gEngine.ResourceMap = (function()
         funToCall();
       }
   };
+
+  var incAssetRefCount = function(rName)
+  {
+    mResourceMap[rName].mRefCount += 1;
+  };
+
   var setLoadCompleteCallback = function (funct)
   {
     mLoadCompleteCallback = funct;
@@ -64,6 +71,9 @@ gEngine.ResourceMap = (function()
 
   var mPublic =
   {
+
+    incAssetRefCount: incAssetRefCount,
+    
     //async resource loading
     asyncLoadRequested: asyncLoadRequested,
     asyncLoadCompleted: asyncLoadCompleted,

@@ -24,7 +24,7 @@ gEngine.Core = (function()
     initializeWebGL(htmlCanvasID);
     gEngine.VertexBuffer.initialize();
     gEngine.Input.initialize();
-
+    gEngine.AudioClips.initAudioContext();
     gEngine.DefaultResources.initialize(function () { startScene(_Game); });
   };
 

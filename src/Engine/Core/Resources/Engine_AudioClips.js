@@ -7,12 +7,13 @@ gEngine.AudioClips = (function()
 	var mAudioContext = null;
 	var mBgAudioNode = null;
 
-	var InitAudioContext = function()
+	var initAudioContext = function()
 	{
 		try
 		{
 			var AudioContext = window.AudioContext || audio.webkitAudioContext;
 			mAudioContext = new AudioContext();
+			console.log(mAudioContext);
 		}
 		catch(e)
 		{
@@ -31,13 +32,12 @@ gEngine.AudioClips = (function()
 			{
 				if ((req.readyState === 4) && (req.status !== 200))
 				{
-					alert(clipName + ": loading failed
-						Make sure to load files from a web server");
+					alert(clipName + ": loading failed Make sure to load files from a web server");
 				}
 			};
 
 			req.open('GET', clipName, true);
-			req.responseTyper = 'arraybuffer';
+			req.responseType = 'arraybuffer';
 
 			req.onload = function()
 			{
@@ -57,7 +57,7 @@ gEngine.AudioClips = (function()
 
 	var unloadAudio = function(clipName)
 	{
-		gEngine.ResourceMap.unloadAudio(clipName);
+		gEngine.ResourceMap.unloadAsset(clipName);
 	};
 
 	var playACue = function(clipName)
@@ -77,7 +77,7 @@ gEngine.AudioClips = (function()
 		var clipInfo = gEngine.ResourceMap.retrieveAsset(clipName);
 		if (clipInfo !== null)
 		{
-			stopBackGroundAudio();
+			stopBackgroundAudio();
 			mBgAudioNode = mAudioContext.createBufferSource();
 			mBgAudioNode.buffer = clipInfo;
 			mBgAudioNode.connect(mAudioContext.destination);
@@ -86,7 +86,7 @@ gEngine.AudioClips = (function()
 		}
 	};
 
-	var stopBackGroundAudio = function()
+	var stopBackgroundAudio = function()
 	{
 		if(mBgAudioNode !== null)
 		{
@@ -102,12 +102,12 @@ gEngine.AudioClips = (function()
 
 	var mPublic =
 	{
-		InitAudioContext: InitAudioContext,
+		initAudioContext: initAudioContext,
 		loadAudio: loadAudio,
 		unloadAudio: unloadAudio,
 		playACue: playACue,
 		playBackgroundAudio: playBackgroundAudio,
-		stopBackGroundAudio: stopBackGroundAudio,
+		stopBackgroundAudio: stopBackgroundAudio,
 		isBackgroundAudioPlayer: isBackgroundAudioPlayer
 	};
 	return mPublic;
