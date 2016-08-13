@@ -1,6 +1,6 @@
-function Renderable(shader)
+function Renderable()
 {
-	this.mShader = shader;
+	this.mShader = gEngine.DefaultResources.getConstColorShader();
 	this.mXform = new Transform();
 	this.mColor = [1, 1, 1, 1];
 }
@@ -16,5 +16,6 @@ Renderable.prototype.draw = function(vpMatrix)
 Renderable.prototype.getXform = function () { return this.mXform; };
 Renderable.prototype.setColor = function(color) { this.mColor = color; };
 Renderable.prototype.getColor = function() { return this.mColor; };
+Renderable.prototype._setShader = function(s) {this.mShader = s;};
 
 
