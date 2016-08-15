@@ -14,13 +14,12 @@ gEngine.Core = (function()
     mGL = canvas.getContext("webgl", {alpha: false}) ||
         canvas.getContext("experimental-webgl", {alpha: false});
 
-    mGl.blendFunc(mGL.SRC_ALPHA, mGL.ONE_MINUS_SRC_ALPHA);
+    mGL.blendFunc(mGL.SRC_ALPHA, mGL.ONE_MINUS_SRC_ALPHA);
     mGL.enable(mGL.BLEND);
 
     //Set images to flip the y axis to match the texture coordinate space
-    mGl.pixelStorei(mGl.UNPACK_FLIP_Y_WEBGL, true);
+    mGL.pixelStorei(mGL.UNPACK_FLIP_Y_WEBGL, true);
 
-    
     if (mGL === null) {
         document.write("<br><b>WebGL is not supported!</b>");
         return;
@@ -32,7 +31,7 @@ gEngine.Core = (function()
     initializeWebGL(htmlCanvasID);
     gEngine.VertexBuffer.initialize();
     gEngine.Input.initialize();
-
+    gEngine.AudioClips.initAudioContext();
     gEngine.DefaultResources.initialize(function () { startScene(_Game); });
   };
 

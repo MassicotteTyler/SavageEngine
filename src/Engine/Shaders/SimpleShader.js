@@ -3,7 +3,7 @@
 function SimpleShader(vertexShaderID, fragmentShaderID)
 {
 	this.mCompiledShader = null;
-  	this.mModelTransform = null;
+  this.mModelTransform = null;
 	this.mShaderVertexPositionAttribute = null;
 	this.mPixelColor = null;
 	this.mViewProjTransform = null;
@@ -41,7 +41,7 @@ function SimpleShader(vertexShaderID, fragmentShaderID)
 		false,
 		0,
 		0);
-}
+};
 
 
 SimpleShader.prototype.getShader = function () { return this.mCompiledShader; };

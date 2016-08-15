@@ -13,14 +13,13 @@ gEngine.AudioClips = (function()
 		{
 			var AudioContext = window.AudioContext || audio.webkitAudioContext;
 			mAudioContext = new AudioContext();
-			console.log(mAudioContext);
 		}
 		catch(e)
 		{
 			alert("Web Audio is not supported");
 		}
-	};
 
+	};
 	var loadAudio = function(clipName)
 	{
 		if (!(gEngine.ResourceMap.isAssetLoaded(clipName)))

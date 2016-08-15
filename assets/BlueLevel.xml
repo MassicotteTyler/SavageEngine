@@ -7,4 +7,13 @@
 		Rotation="30" Color="1 1 1 1"/>
 	<Square PosX="20" PosY="60" Width="2" Height="3"
 		Rotation="0" Color="1 0 0 1"/>
+
+  <TextureSquare PosX="15" PosY="60" Width="3" Height="3" Rotation="-5"
+    Color="1 0 0 0.3"
+    Texture="assets/minion_portal.jpg" />
+
+  <TextureSquare PosX="25" PosY="60" Width="3" Height="3" Rotation="5"
+    Color="0 0 0 0"
+    Texture="assets/minion_collector.jpg" />
+
 </SavageLevel>

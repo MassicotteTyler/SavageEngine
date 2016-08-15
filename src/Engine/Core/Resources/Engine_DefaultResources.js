@@ -4,8 +4,8 @@ gEngine.DefaultResources = (function()
 {
   var kSimpleVS = "src/GLSLShaders/SimpleVS.glsl";
   var kSimpleFS = "src/GLSLShaders/SimpleFS.glsl";
-  var kTexturesVS = "src/GLSLShaders/TexturesVS.glsl";
-  var kTexturesFS = "src/GLSLShaders/TexturesFS.glsl";
+  var kTextureVS = "src/GLSLShaders/TextureVS.glsl";
+  var kTextureFS = "src/GLSLShaders/TextureFS.glsl";
 
 
   var mConstColorShader = null;
@@ -17,7 +17,7 @@ gEngine.DefaultResources = (function()
   var _createShaders = function(callBackFunction)
   {
     mConstColorShader = new SimpleShader(kSimpleVS, kSimpleFS);
-    mTextureShader = new TextureShader(kTexturesVS, kTexturesFS);
+    mTextureShader = new TextureShader(kTextureVS, kTextureFS);
     callBackFunction();
   };
 
@@ -32,7 +32,7 @@ gEngine.DefaultResources = (function()
 
 
     //Texture shader
-    gEngine.TextFileLoader.loadTextFile(kTexturesVS,
+    gEngine.TextFileLoader.loadTextFile(kTextureVS,
         gEngine.TextFileLoader.eTextFileType.eTextFile);
 
     gEngine.TextFileLoader.loadTextFile(kTextureFS,
