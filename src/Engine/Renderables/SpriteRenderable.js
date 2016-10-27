@@ -37,8 +37,8 @@ SpriteRenderable.eTexCoordArray = Object.freeze(
   {
     var texInfo = gEngine.ResourceMap.retrieveAsset(this.mTexture);
 
-    var imageW = textInfo.mWidth;
-    var imageH = textInfo.Height;
+    var imageW = texInfo.mWidth;
+    var imageH = texInfo.Height;
 
     this.mTextLeft = left / imageW;
     this.mTextRight = right / imageW;

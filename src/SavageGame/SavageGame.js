@@ -5,10 +5,12 @@ function SavageGame()
   this.mHero = null;
   this.mPortal = null;
   this.mCollector = null;
+	this.mRightMinion = null;
+  this.mLeftMinion = null;
 
   this.kSceneFile = "assets/scene.xml";
-  this.kPortal = "assets/minion_portal.png";
-  this.kCollector = "assets/minion_collector.png";
+  this.kFontImage = "assets/Consolas-72.png";
+  this.kMinionSprite = "assets/minion_sprite.png";
 
   this.mSqSet = new Array();
   this.mCamera = null;
@@ -24,26 +26,59 @@ gEngine.Core.inheritPrototype(SavageGame, Scene);
 SavageGame.prototype.initialize = function()
 {
   var sceneParser = new SceneFileParser(this.kSceneFile);
-  this.mCamera = sceneParser.parseCamera();
-  sceneParser.parseSquares(this.mSqSet);
-  sceneParser.parseTextureSquares(this.mSqSet);
-  gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
+  this.mCamera = new Camera(
+    vec2.fromValues(20, 60),
+    20,
+    [20, 40, 600, 300]
+  );
+
+  this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
   //Create game objects
-  this.mPortal = new TextureRenderable(this.kPortal);
+  this.mPortal = new SpriteRenderable(this.kMinionSprite);
   this.mPortal.setColor([1, 0, 0, 0.2]);
   this.mPortal.getXform().setPosition(25, 60);
   this.mPortal.getXform().setSize(3, 3);
+  this.mPortal.setElementPixelPositions(130, 310, 0, 180);
 
-  this.mCollector = new TextureRenderable(this.kCollector);
+  this.mCollector = new SpriteRenderable(this.kMinionSprite);
   this.mCollector.setColor([0, 0, 0, 0]);
   this.mPortal.getXform().setPosition(15, 60);
   this.mPortal.getXform().setSize(3, 3);
+  this.mPortal.setElementPixelPositions(315, 495, 0, 180);
 
-  this.mHero = new Renderable();
-  this.mHero.setColor([0, 0, 1, 1]);
+  this.mFontImage = new SpriteRenderable(this.kFontImage);
+  this.mFontImage.setColor([1, 1, 1, 0]);
+  this.mFontImage.getXform().setPosition(13, 62);
+  this.mFontImage.getXform().setSize(4, 4);
+
+	this.mRightMinion= new SpriteAnimateRenderable(this.kMinionSprite);
+	this.mRightMinion.setColor([1, 1, 1, 0]);
+	this.mRightMinion.getXform().setPosition(26, 56.5);
+	this.mRightMinion.getXform().setSize(4, 3.2);
+	this.mRightMinion.setSpriteSequence(512, 0,     // first element pixel position: top-left 512 is top of image, 0 is left of image
+																	204, 164,       // widthxheight in pixels
+																	5,              // number of elements in this sequence
+																	0);             // horizontal padding in between
+	this.mRightMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateRight);
+	this.mRightMinion.setAnimationSpeed(50);
+
+  this.mHero = new SpriteRenderable(this.kMinionSprite);
+  this.mHero.setColor([1, 1, 1, 0]);
   this.mHero.getXform().setPosition(20, 60);
   this.mHero.getXform().setSize(2, 3);
+  this.mHero.setElementPixelPositions(0, 120, 0, 180);
+
+	this.mLeftMinion = new SpriteAnimateRenderable(this.kMinionSprite);
+	this.mLeftMinion.setColor([1, 1, 1, 0]);
+	this.mLeftMinion.getXform().setPosition(15, 56.5);
+	this.mLeftMinion.getXform().setSize(4, 3.2);
+	this.mLeftMinion.setSpriteSequence(348, 0,      // first element pixel position: top-right 164 from 512 is top of image, 0 is right of image
+																	204, 164,       // widthxheight in pixels
+																	5,              // number of elements in this sequence
+																	0);             // horizontal padding in between
+	this.mLeftMinion.setAnimationType(SpriteAnimateRenderable.eAnimationType.eAnimateRight);
+	this.mLeftMinion.setAnimationSpeed(50);
 
 };
 
@@ -90,6 +125,31 @@ SavageGame.prototype.update = function()
   }
   c[3] = ca;
 
+  var deltaT = 0.001;
+
+  var texCoord = this.mFontImage.getElementUVCoordinateArray();
+  var b = texCoord[SpriteRenderable.eTexCoordArray.eBottom] + deltaT;
+  var r = texCoord[SpriteRenderable.eTexCoordArray.eRight] - deltaT;
+
+  if (b > 1.0)
+  {
+      b = 0;
+  }
+  if (r < 0)
+  {
+      r = 1.0;
+  }
+
+  this.mFontImage.setElementUVCoordinate(
+    texCoord[SpriteRenderable.eTexCoordArray.eLeft],
+    r,
+    b,
+    texCoord[SpriteRenderable.eTexCoordArray.eTop]
+  );
+
+  this.mRightMinion.updateAnimation();
+  this.mLeftMinion.updateAnimation();
+
 };
 
 SavageGame.prototype.draw = function()
@@ -97,37 +157,26 @@ SavageGame.prototype.draw = function()
   gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
 
   this.mCamera.setupViewProjection();
+  var matrix = this.mCamera.getVPMatrix();
 
-  for (var i = 0; i < this.mSqSet.length; i++)
-  {
-    this.mSqSet[i].draw(this.mCamera.getVPMatrix());
-  }
+  this.mPortal.draw(matrix);
+  this.mCollector.draw(matrix);
+  this.mHero.draw(matrix);
+  this.mLeftMinion.draw(matrix);
+  this.mRightMinion(matrix);
+  this.mFontImage.draw(matrix);
 };
 
 SavageGame.prototype.loadScene = function()
 {
-  gEngine.TextFileLoader.loadTextFile(this.kSceneFile,
-                               gEngine.TextFileLoader.eTextFileType.eXMLFile);
-
-  gEngine.AudioClips.loadAudio(this.kBgClip);
-  gEngine.AudioClips.loadAudio(this.kCue);
-
-  gEngine.Textures.loadTexture(this.kPortal);
-  gEngine.Textures.loadTexture(this.kCollector);
+  gEngine.Textures.loadTexture(this.kFontImage);
+  gEngine.Textures.loadTexture(this.kMinionSprite);
 };
 
 SavageGame.prototype.unloadScene = function()
 {
-  //stop the background audio before unloading it
-  gEngine.AudioClips.stopBackgroundAudio();
-
-  gEngine.AudioClips.unloadAudio(this.kCue);
-  gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
-  gEngine.Textures.unloadTexture(this.kPortal);
-  gEngine.Textures.unloadTexture(this.kCollector);
-
-  var nextLevel = new BlueLevel();
-  gEngine.Core.startScene(nextLevel);
+  gEngine.Textures.unloadTexture(this.kFontImage);
+  gEngine.Textures.unloadTexture(this.kMinionSprite);
 
 };
 
